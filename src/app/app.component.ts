@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './../auth.service';
@@ -13,7 +13,8 @@ import { AuthService } from './../auth.service';
 export class AppComponent {
   title = 'messenger-app';
   
-  constructor(public authService: AuthService) {}
+  // FIXED: Use inject() function
+  public authService = inject(AuthService);
   
   logout() {
     this.authService.logout();
