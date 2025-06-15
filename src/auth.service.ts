@@ -7,7 +7,6 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class AuthService {
-  // FIXED: Use inject() function
   private apiService = inject(ApiService);
   private router = inject(Router);
 
@@ -18,7 +17,8 @@ export class AuthService {
   
   private isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  // FIXED: Use primitive 'object' type
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser = isPlatformBrowser(platformId);
     
     if (this.isBrowser) {
