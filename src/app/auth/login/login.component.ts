@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -12,16 +12,18 @@ import { AuthService } from '../../../auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  isLoading: boolean = false;
-  returnUrl: string = '/';
+  // FIXED: Removed type annotations
+  username = '';
+  password = '';
+  isLoading = false;
+  returnUrl = '/';
 
-  constructor(
-    public authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
+  // Use inject() function
+  public authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  constructor() {
     // Get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     
