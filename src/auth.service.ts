@@ -7,6 +7,7 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class AuthService {
+  // FIXED: Use inject() function
   private apiService = inject(ApiService);
   private router = inject(Router);
 
@@ -24,7 +25,6 @@ export class AuthService {
       this.checkSavedAuth();
     }
   }
-
 
   public loginStatus() {
     return this.apiService.loginStatus();
@@ -52,7 +52,6 @@ export class AuthService {
     }
   }
 
-
   logout(): void {
     this.apiService.logout();
     
@@ -70,13 +69,11 @@ export class AuthService {
     localStorage.setItem('auth', JSON.stringify({ id, username, token }));
   }
 
-
   private clearSavedAuth(): void {
     if (!this.isBrowser) return;
     
     localStorage.removeItem('auth');
   }
-
 
   private checkSavedAuth(): void {
     if (!this.isBrowser) return;
