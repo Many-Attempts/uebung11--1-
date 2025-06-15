@@ -1,0 +1,34 @@
+<div class="container">
+  <header>
+    <h1>Messenger App</h1>
+    <nav>
+      <a routerLink="/">Home</a>
+      
+      <!-- Show login link only when not authenticated -->
+      <a routerLink="/login" *ngIf="!authService.isAuthenticated()">Login</a>
+      
+      <!-- Show these links only when authenticated -->
+      <ng-container *ngIf="authService.isAuthenticated()">
+        <a routerLink="/messages">Messages</a>
+        
+        <!-- User info and logout button -->
+        <span class="user-info">
+          <span class="username">{{ authService.loginStatus().username }}</span>
+          <button class="logout-btn" (click)="logout()">Logout</button>
+        </span>
+      </ng-container>
+    </nav>
+  </header>
+  
+  <!-- Auth status messages -->
+  <div class="auth-message success" *ngIf="authService.isAuthenticated()">
+    You are logged in as {{ authService.loginStatus().username }}
+  </div>
+  <div class="auth-message error" *ngIf="authService.loginErrorMessage()">
+    {{ authService.loginErrorMessage() }}
+  </div>
+  
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

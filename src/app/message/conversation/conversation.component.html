@@ -1,0 +1,67 @@
+<div class="conversation-container">
+  <!-- Loading state -->
+  <div class="loading-state" *ngIf="isLoading()">
+    <p>Loading conversation...</p>
+  </div>
+  
+  <!-- Error state -->
+  <div class="error-state" *ngIf="errorMessage()">
+    <p>{{ errorMessage() }}</p>
+    <a routerLink="/messages" class="back-button">Back to messages</a>
+  </div>
+  
+  <!-- Conversation view -->
+  <ng-container *ngIf="!isLoading() && !errorMessage()">
+    <div class="conversation-header">
+      <a routerLink="/messages" class="back-button">Back to messages</a>
+      <div class="conversation-info">
+        <h2>{{ receiverName }}</h2>
+      </div>
+      <button class="refresh-button" (click)="loadConversation()">
+        <span class="refresh-icon">↻</span> Refresh
+      </button>
+    </div>
+    
+    <div id="messageContainer" class="messages-container">
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="messages().length === 0">
+        <p>No messages yet. Start a conversation!</p>
+      </div>
+      
+      <!-- Messages -->
+      <div 
+        *ngFor="let message of messages()" 
+        class="message" 
+        [ngClass]="message.isMe ? 'message-sent' : 'message-received'"
+      >
+        <div class="message-bubble">
+          <div class="message-content">{{ message.message }}</div>
+          <div class="message-timestamp">{{ message.timestamp }}</div>
+        </div>
+      </div>
+      
+      <!-- Scroll to bottom button -->
+      <button 
+        class="scroll-bottom-button"
+        (click)="scrollToBottom()"
+        *ngIf="messages().length > 5"
+      >
+        <span class="scroll-icon">↓</span>
+      </button>
+    </div>
+    
+    <div class="message-input">
+    
+      <form (ngSubmit)="sendMessage()">
+        <input 
+          type="text" 
+          [(ngModel)]="newMessage" 
+          name="newMessage"
+          placeholder="Type a message..." 
+        >
+        <!-- Button that's disabled when input contains only whitespace -->
+        <button type="submit" [disabled]="!newMessage.trim()">Send</button>
+      </form>
+    </div>
+  </ng-container>
+</div>

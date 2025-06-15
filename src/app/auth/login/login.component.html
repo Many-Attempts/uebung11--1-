@@ -1,0 +1,48 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input 
+        type="text" 
+        id="username" 
+        name="username" 
+        [(ngModel)]="username" 
+        required
+        [disabled]="isLoading"
+      >
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        [(ngModel)]="password" 
+        required
+        [disabled]="isLoading"
+      >
+    </div>
+    
+    <!-- Error message -->
+    <div class="error-message" *ngIf="authService.loginErrorMessage()">
+      {{ authService.loginErrorMessage() }}
+    </div>
+    
+    <!-- Login status -->
+    <div class="success-message" *ngIf="authService.isAuthenticated()">
+      You are logged in as {{ authService.loginStatus().username }}
+    </div>
+    
+    <button 
+      type="submit" 
+      [disabled]="isLoading || !username || !password"
+    >
+      {{ isLoading ? 'Logging in...' : 'Login' }}
+    </button>
+  </form>
+
+  <p>
+    <a routerLink="/">Back to home</a>
+  </p>
+</div>
