@@ -1,4 +1,4 @@
-import { Injectable, signal, computed, inject, PLATFORM_ID, Inject } from '@angular/core';
+import { Injectable, signal, computed, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService } from './api.service';
@@ -9,6 +9,9 @@ import { ApiService } from './api.service';
 export class AuthService {
   private apiService = inject(ApiService);
   private router = inject(Router);
+  
+  // FIXED: Use inject() function for PLATFORM_ID
+  private platformId = inject(PLATFORM_ID);
 
   private _loginErrorMessage = signal<string | null>(null);
   public loginErrorMessage = this._loginErrorMessage.asReadonly();
@@ -17,9 +20,9 @@ export class AuthService {
   
   private isBrowser: boolean;
 
-  // FIXED: Use primitive 'object' type
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
-    this.isBrowser = isPlatformBrowser(platformId);
+  constructor() {
+    // Use the injected platformId
+    this.isBrowser = isPlatformBrowser(this.platformId);
     
     if (this.isBrowser) {
       this.checkSavedAuth();
