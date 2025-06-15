@@ -30,13 +30,13 @@ export class ConversationComponent implements OnInit {
   readonly errorMessage = signal<string | null>(null);
   readonly messages = signal<Message[]>([]);
   
-  // FIXED: Removed type annotations
+  // Component properties
   conversationId = '';
   receiverId = '';
   receiverName = '';
   newMessage = '';
   
-  constructor() { }
+  // FIXED: Removed empty constructor
   
   ngOnInit(): void {
     // Check if user is authenticated
