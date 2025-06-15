@@ -17,12 +17,10 @@ export class ApiService {
   private _loginStatus = signal(initialLoginStatus);
   public loginStatus = this._loginStatus.asReadonly();
 
-  constructor() { }
+  // FIXED: Removed empty constructor
 
   async login(username: string, password: string) {
-    // TODO: implement login using fetch()
     const url = `${this.apiUrl}login.php`;
-
 
     const formData = new FormData();
     formData.append("username_or_email", username);
@@ -45,9 +43,7 @@ export class ApiService {
     }
   }
 
-
   logout() {
     this._loginStatus.set(initialLoginStatus);
   }
-
 }
