@@ -73,22 +73,24 @@ export class MessageListComponent implements OnInit {
   }
   
 
-  private handleApiResponse(data: any): void {
+  // FIXED: Replace 'any'
+  private handleApiResponse(data: User[] | { error: string } | unknown): void {
     console.log('API Response:', data);
     
-    // Check if there's an error in the response
-    if (data && data.error) {
-      this.handleApiError(`Authentication error: ${data.error}`);
+    // Check if there's an error in the response using type guard
+    if (data && typeof data === 'object' && 'error' in data) {
+      const errorData = data as { error: string };
+      this.handleApiError(`Authentication error: ${errorData.error}`);
       
       // If unauthorized, redirect to login
-      if (data.error.includes('Unauthorized')) {
+      if (errorData.error.includes('Unauthorized')) {
         this.authService.logout();
         this.router.navigate(['/login']);
       }
       return;
     }
     
-    // Check if data is an array
+    // Check if data is an array using type guard
     if (Array.isArray(data)) {
       this.contacts.set(data as User[]);
       this.isLoading.set(false);
